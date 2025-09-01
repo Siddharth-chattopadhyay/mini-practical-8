@@ -31,6 +31,44 @@ class LinkedList{
                 newNode = NULL;
             }
             this -> HEAD -> data = data;
+            cout << "Inserted the values at the beginning of the list" << endl;
+        }
+
+        void insert_at_pos(int key, int data){
+            if (key < 0){
+                cout << "Invalid key" << endl;
+            }
+            else {
+                int count = 0;
+                Node* ptr = HEAD;
+                while (ptr != NULL){
+                    ptr = ptr -> next;
+                    count++;
+                }
+
+                if (key >= count)
+                    cout << "key overflow" << endl;
+
+                else {
+                    newNode = new Node;
+                    newNode -> data = data;
+                    ptr = HEAD;
+                    for (int i = 0; i < key; i++){
+                        nextNode = ptr;
+                        ptr = ptr -> next;
+                    }
+                    newNode -> next = ptr;
+                    
+                    if (nextNode != NULL)
+                        nextNode -> next = newNode;
+
+                    if (key == 0){
+                        HEAD = newNode;
+                    }
+                    cout << "Inserted an element at pos: " << key << endl;
+                }
+                nextNode = newNode = ptr = NULL;
+            }
         }
 
         void search(int key){
@@ -38,8 +76,9 @@ class LinkedList{
             for (int i = 0; i < key; i++)
                 if (ptr != NULL)
                     ptr = ptr -> next;
-                else 
-                    cout << "Node key overflow" << endl;
+
+            if (ptr == NULL)
+                cout << "Node key overflow" << endl;
             cout << "Searched data is " << ptr -> data << endl;
             
         }
@@ -83,7 +122,6 @@ class LinkedList{
                 delete ptr;
                 cout << "Successfully deleted a node by value: " << data << endl;
             }
-
             prev = ptr = deleteNode = NULL;
 
         }
@@ -109,6 +147,7 @@ class LinkedList{
 
             ptr = NULL;
             end = NULL;
+            cout << "Reversed a linked list" << endl;
         }
 
         void display(){
@@ -124,7 +163,7 @@ class LinkedList{
         void append(int data){
             newNode = new Node();
             if (newNode == NULL)
-            cout << "Unable to append an integer value" << endl;
+                cout << "Unable to append an integer value" << endl;
             else {
                 newNode->data = data;
                 newNode->next = NULL;
@@ -142,96 +181,117 @@ class LinkedList{
     
                 newNode = NULL;
                 ptr = NULL;
+                cout << "Appended a data to linked list" << endl;
             }
         }
 
-        void append(LinkedList& data){
-            Node* ptr = HEAD;
-            if (HEAD == NULL)
-                HEAD = data.HEAD;
-            else {
-                while (ptr -> next != NULL)
-                    ptr = ptr -> next;
+        // void append(LinkedList& data){
+        //     Node* ptr = HEAD;
+        //     if (HEAD == NULL)
+        //         HEAD = data.HEAD;
+        //     else {
+        //         while (ptr -> next != NULL)
+        //             ptr = ptr -> next;
     
-                ptr -> next = data.HEAD;
-            }
-            ptr = NULL;
-        }
+        //         ptr -> next = data.HEAD;
+        //     }
+        //     ptr = NULL;
+        // }
 };
 
 int main() {
+    LinkedList linkedList;
+    int choice, ele, pos;
+    do{
+        cout << "1. Insert values at the beginning of the list" << endl;
+        cout << "2. Insert values at the position of the list" << endl;
+        cout << "3. Insert values at the end of the list" << endl;
 
-    // int choice, ele, pos;
-    // do{
-    //     cout << "1. Insert values at the beginning of the list" << endl;
-    //     cout << "2. Insert values at the position of the list" << endl;
-    //     cout << "3. Insert values at the end of the list" << endl;
+        cout << "4. Delete values from the behinning of the list" << endl;
+        cout << "5. Delete values from the position of the list" << endl;
+        cout << "6. Delete values from the end of the list" << endl;
 
-    //     cout << "4. Delete values from the behinning of the list" << endl;
-    //     cout << "5. Delete values from the position of the list" << endl;
-    //     cout << "6. Delete values from the end of the list" << endl;
+        cout << "7. Update values at the position of the list" << endl;
+        cout << "8. Check the list count" << endl;
+        cout << "9. List all values" << endl;
 
-    //     cout << "7. Update values at the position of the list" << endl;
-    //     cout << "8. Check the list count" << endl;
-    //     cout << "9. List all values" << endl;
+        cout << "0. Exit" << endl;
 
-    //     cout << "0. Exit" << endl;
+        cout << "Your Choice: ";
+        cin >> choice;
 
-    //     cout << "Your Choice: ";
-    //     cin >> choice;
+        switch (choice){
+            case 0:
+                cout << "Exiting operations... Thank you for using Linked List" << endl;
+                break;
 
-    //     switch (choice){
-    //         case 0:
-    //             cout << "Exiting operations... Thank you for using Linked List" << endl;
-    //             break;
+            case 1:
+                cout << "Enter element value: ";
+                cin >> ele;
+                linkedList.insert_at_beginning(ele);
+                break;
 
-    //         case 1:
+            case 2:
+                cout << "Enter position: ";
+                cin >> pos;
+                cout << "Enter element value: ";
+                cin >> ele;
 
-    //     }
-    // } while(choice != 0);
+                linkedList.insert_at_pos(pos, ele);
+                break;
 
-    int s = 0;
+            case 9:
+                linkedList.display();
+                break;
 
-    LinkedList l1;
+            default:
+                cout << "Invalid choice ... try again" << endl;
+
+        }
+    } while(choice != 0);
+
+    // int s = 0;
+
+    // LinkedList l1;
 
 
 
-    l1.append(s += 10);
-    l1.append(s += 10);
-    l1.append(s += 10);
-    l1.append(s += 10);
-    l1.append(s += 10);
+    // l1.append(s += 10);
+    // l1.append(s += 10);
+    // l1.append(s += 10);
+    // l1.append(s += 10);
+    // l1.append(s += 10);
 
-    l1.insert_at_beginning(s += 10);
-    l1.insert_at_beginning(s += 10);
-    l1.insert_at_beginning(s += 10);
-    l1.insert_at_beginning(s += 10);
-    l1.insert_at_beginning(s += 10);
+    // l1.insert_at_beginning(s += 10);
+    // l1.insert_at_beginning(s += 10);
+    // l1.insert_at_beginning(s += 10);
+    // l1.insert_at_beginning(s += 10);
+    // l1.insert_at_beginning(s += 10);
 
-    l1.display();
-    l1.reverse();
-    l1.display();
+    // l1.display();
+    // l1.reverse();
+    // l1.display();
     
-    l1.delete_node(1);
-    l1.display();
+    // l1.delete_node(1);
+    // l1.display();
     
-    l1.delete_node_by_value(100);
-    l1.display();
+    // l1.delete_node_by_value(100);
+    // l1.display();
 
-    LinkedList create;
-    create.insert_at_beginning(1290);
-    create.insert_at_beginning(1291);
-    create.insert_at_beginning(1292);
+    // LinkedList create;
+    // create.insert_at_beginning(1290);
+    // create.insert_at_beginning(1291);
+    // create.insert_at_beginning(1292);
 
-    create.append(170);
-    create.append(171);
-    create.append(172);
+    // create.append(170);
+    // create.append(171);
+    // create.append(172);
 
-    l1.append(create);
+    // l1.append(create);
 
-    create.display();
-    l1.display();
+    // create.display();
+    // l1.display();
 
-    l1.search(2);
+    // l1.search(2);
     return 0;
 }
