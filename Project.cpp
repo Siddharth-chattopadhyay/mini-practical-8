@@ -84,46 +84,82 @@ class LinkedList{
         }
 
         void delete_node(int key){
-            if (key <= 0)
+            if (key < 0)
                 cout << "Invalid key number: " << key << endl;
             else {
                 Node* ptr = HEAD;
-                for (int i = 0; i < key - 1; i++)
-                    if (ptr != NULL)
-                        ptr = ptr -> next;
-                    else 
-                        cout << "Node key overflow" << endl;
-            
-                nextNode = ptr -> next -> next;
-                delete ptr -> next;
-                ptr -> next = nextNode;
-                nextNode = NULL;
-                ptr = NULL;
-                cout << "Deleted the node from key: " << key << endl;
+                if (key == 0){
+                    ptr = ptr -> next;
+                    delete HEAD;
+                    HEAD = ptr;
+                }
+                else {
+                    ptr = HEAD;
+                    for (int i = 0; i < key - 1; i++)
+                        if (ptr != NULL)
+                            ptr = ptr -> next;
+                        else 
+                            cout << "Node key overflow" << endl;
+                
+                    nextNode = ptr -> next -> next;
+                    delete ptr -> next;
+                    ptr -> next = nextNode;
+                    nextNode = NULL;
+                    ptr = NULL;
+                    cout << "Deleted the node from key: " << key << endl;
+                }
+            }
+        }
+
+        void pop(){
+            if (HEAD == NULL){
+                cout << "No value is present" << endl;
+            }
+            else if (HEAD -> next == NULL){
+                delete HEAD;
+                HEAD = NULL;
+                cout << "Popped (deleted from end) back node" << endl;
+            }
+            else {
+                Node* ptr = HEAD, *prev;
+                while (ptr -> next != NULL){
+                    prev = ptr;
+                    ptr = ptr -> next;
+                }
+                delete ptr;
+                prev -> next = NULL;
+                cout << "Popped (deleted from end) back node" << endl;
             }
         }
 
         void delete_node_by_value(int data){
             Node* ptr = HEAD;
-            Node* prev = NULL;
-            Node* deleteNode = NULL;
-            while (ptr != NULL && deleteNode == NULL){
-                if (ptr -> data == data)
-                    deleteNode = ptr;
-                else {
-                    prev = ptr;
-                    ptr = ptr -> next;
-                }
+            if (ptr -> data == data){
+                ptr = ptr -> next;
+                delete HEAD;
+                HEAD = ptr;
             }
-            if (deleteNode == NULL)
-                cout << "Couldn't find a node by value: " << data << endl;
             else {
-                prev -> next = ptr -> next;
-                delete ptr;
-                cout << "Successfully deleted a node by value: " << data << endl;
+                Node* prev = NULL;
+                Node* deleteNode = NULL;
+                while (ptr != NULL && deleteNode == NULL){
+                    if (ptr -> data == data)
+                        deleteNode = ptr;
+                    else {
+                        prev = ptr;
+                        ptr = ptr -> next;
+                    }
+                }
+                if (deleteNode == NULL)
+                    cout << "Couldn't find a node by value: " << data << endl;
+                else {
+                    prev -> next = ptr -> next;
+                    delete ptr;
+                    cout << "Successfully deleted a node by value: " << data << endl;
+                }
+                prev = deleteNode = NULL;
             }
-            prev = ptr = deleteNode = NULL;
-
+            ptr = NULL;
         }
 
         void reverse(){
@@ -150,14 +186,46 @@ class LinkedList{
             cout << "Reversed a linked list" << endl;
         }
 
-        void display(){
-            Node* ptr = HEAD;
-            cout << "Values are: ";
-            while (ptr != NULL){
-                cout << ptr -> data << " ";
-                ptr = ptr -> next;
+        void overrite(int key, int newValue){
+            if (key < 0)
+                cout << "Invalid key number: " << key << endl;
+
+            else {
+                int count = 1;
+                Node* ptr = HEAD;
+                while (HEAD != NULL && ptr -> next != NULL){
+                    ptr = ptr -> next;
+                    count++;
+                }
+                
+                if (key >= count){
+                    cout << "Key value overflow" << endl;
+                }
+                
+                else {
+                    ptr = HEAD;
+                    for (int i = 0; i < key; i++){
+                        ptr = ptr -> next;
+                    }
+                    cout << "Overritten data from " << ptr -> data << " to " << newValue << " at key " << key << endl;
+                    ptr -> data = newValue;
+                }
             }
-            cout << endl;
+        }
+
+        void display(){
+            if (HEAD == NULL){
+                cout << "Nothing is present" << endl;
+            }
+            else {
+                Node* ptr = HEAD;
+                cout << "Values are: ";
+                while (ptr != NULL){
+                    cout << ptr -> data << " ";
+                    ptr = ptr -> next;
+                }
+                cout << endl;
+            }
         }
 
         void append(int data){
@@ -183,6 +251,16 @@ class LinkedList{
                 ptr = NULL;
                 cout << "Appended a data to linked list" << endl;
             }
+        }
+
+        int getCount(){
+            int count = 0;
+            Node* ptr = HEAD;
+            while (ptr != NULL){
+                ++count;
+                ptr = ptr -> next;
+            }
+            return count;
         }
 
         // void append(LinkedList& data){
@@ -239,6 +317,38 @@ int main() {
 
                 linkedList.insert_at_pos(pos, ele);
                 break;
+            
+            case 3:
+                cout << "Enter element value: ";
+                cin >> ele;
+                linkedList.append(ele);
+                break;
+
+            case 4:
+                linkedList.delete_node(0);
+                break;
+
+            case 5:
+                cout << "Enter position: ";
+                cin >> pos;
+                linkedList.delete_node(pos);
+                break;
+
+            case 6:
+                linkedList.pop();
+                break;
+
+            case 7:
+                cout << "Enter position: ";
+                cin >> pos;
+                cout << "Enter new value: ";
+                cin >> ele;
+                linkedList.overrite(pos, ele);
+                break;
+
+            case 8:
+                cout << "amount of data is " << linkedList.getCount() << endl;
+                break;
 
             case 9:
                 linkedList.display();
@@ -249,49 +359,5 @@ int main() {
 
         }
     } while(choice != 0);
-
-    // int s = 0;
-
-    // LinkedList l1;
-
-
-
-    // l1.append(s += 10);
-    // l1.append(s += 10);
-    // l1.append(s += 10);
-    // l1.append(s += 10);
-    // l1.append(s += 10);
-
-    // l1.insert_at_beginning(s += 10);
-    // l1.insert_at_beginning(s += 10);
-    // l1.insert_at_beginning(s += 10);
-    // l1.insert_at_beginning(s += 10);
-    // l1.insert_at_beginning(s += 10);
-
-    // l1.display();
-    // l1.reverse();
-    // l1.display();
-    
-    // l1.delete_node(1);
-    // l1.display();
-    
-    // l1.delete_node_by_value(100);
-    // l1.display();
-
-    // LinkedList create;
-    // create.insert_at_beginning(1290);
-    // create.insert_at_beginning(1291);
-    // create.insert_at_beginning(1292);
-
-    // create.append(170);
-    // create.append(171);
-    // create.append(172);
-
-    // l1.append(create);
-
-    // create.display();
-    // l1.display();
-
-    // l1.search(2);
     return 0;
 }
